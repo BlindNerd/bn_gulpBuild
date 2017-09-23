@@ -15,17 +15,17 @@ livereload = require('gulp-livereload');
 // concatenate javascript
 gulp.task('concatScripts',() => {
   return gulp.src(['js/jquery-3.2.1.js','js/circle/**.js'])
-      .pipe(maps.init())
       .pipe(concat('global.js'))
-      .pipe(maps.write('./'))
       .pipe(gulp.dest('js'));
 });
 
   // minify javascript and add a reload if ran agian
 gulp.task('scripts', ['concatScripts'], () => {
     return gulp.src('js/global.js')
+       .pipe(maps.init())
        .pipe(uglify())
        .pipe(rename('all.min.js'))
+       .pipe(maps.write('./'))
        .pipe(gulp.dest('dist/scripts'))
        .pipe(livereload());
 });
@@ -33,17 +33,17 @@ gulp.task('scripts', ['concatScripts'], () => {
  // compile sass and write maps
 gulp.task('compileSass', () => {
   return gulp.src('src/sass/global.scss')
-      .pipe(maps.init())
       .pipe(sass())
-      .pipe(maps.write('./'))
       .pipe(gulp.dest('css'));
 });
 
 // create a styles task
 gulp.task('styles',['compileSass'], () => {
   return gulp.src('css/global.css')
+    .pipe(maps.init())
     .pipe(cleanCSS({compatibility: 'ie8'}))
     .pipe(rename('all.min.css'))
+    .pipe(maps.write('./'))
     .pipe(gulp.dest('dist/styles'))
     .pipe(livereload());
 });
@@ -77,7 +77,7 @@ gulp.task('build', ['clean'], () => {
 // create a watch task
 gulp.task('watch', () => {
   livereload.listen();
-  gulp.watch('src/sass/**', ['styles'])
+  gulp.watch('src/sass/**/*.scss', ['styles'])
   gulp.watch('js/circle/*.js', ['scripts'])
 });
 
