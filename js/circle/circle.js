@@ -51,7 +51,7 @@ $( document ).ready(function() {
     return "<a class='button " + state + "'>" + text + "</div>";
   });
 
-console.log('If this works its amazing how easy this was compared to some of the other projects.');
+console.log('Congradulations it works');
 
 
 });
